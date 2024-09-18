@@ -44,19 +44,49 @@ public class SinhVienServlet extends HttpServlet {
         }else if(uri.contains("view-update")){
             //gọi đến search
         }else if(uri.contains("view-add")){
-            //gọi đến search
+            //gọi đến view-add
+            this.viewAdd(req,resp);
         }else{
             //gọi đến get all
         }
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        String uri= req.getRequestURI();
+        if(uri.contains("update")){
+           //gọi đến update
+        }else if(uri.contains("add")){
+            //gọi đến add
+            this.addStudent(req,resp);
+        }
 
     }
     //Lấy toàn bộ danh sách từ service sang
     private void getAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         listSV= service.getAll();
+        req.setAttribute("listSV",listSV);
+        req.getRequestDispatcher("/b4/sinh-vien.jsp").forward(req,resp);
+    }
+    private void viewAdd(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    req.getRequestDispatcher("/b4/add-sinh-vien.jsp").forward(req,resp);
+    }
+    private void addStudent(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //B1: lấy dữ liệu từ JSP
+        String mssv= req.getParameter("mssv");
+        String ten= req.getParameter("ten");
+        String tuoi= req.getParameter("tuoi");
+        String diaChi= req.getParameter("diaChi");
+        String gioiTinh= req.getParameter("gioiTinh");
+        //B2: Tạo đối tượng SV
+        SinhVien sv= new SinhVien(mssv,ten,
+                Integer.valueOf(tuoi),
+                Boolean.valueOf(gioiTinh),
+                diaChi
+                );
+        //B3: thêm đối tượng SV mới vào danh sách
+        service.addSinhVien(sv);
+        //B4: lấy lại danh sách để chuyển sang trang jsp
+        listSV = service.getAll();
         req.setAttribute("listSV",listSV);
         req.getRequestDispatcher("/b4/sinh-vien.jsp").forward(req,resp);
     }

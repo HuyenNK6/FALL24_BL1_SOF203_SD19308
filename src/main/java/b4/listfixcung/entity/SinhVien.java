@@ -10,7 +10,9 @@ import lombok.*;
 @ToString//Tạo ra phương thức toString.
 @AllArgsConstructor //tạo ra một constructor có tham số cho tất cả các trường (fields) của lớp đó
 @NoArgsConstructor //tạo một constructor không tham số
-@Builder//giúp tạo ra các đối tượng 1 cách dễ dàng với các thuộc tính tùy chọn
+@Builder//Hỗ trợ, loại bớt việc phải viết nhiều constructor.
+// giúp tạo ra các đối tượng 1 cách dễ dàng với các thuộc tính tùy chọn
+//nói cách khác: tạo constructor tùy ý
 public class SinhVien {
     //String mssv; String ten; int tuoi; boolean gioiTinh; String diaChi;
     private String mssv;
