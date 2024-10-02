@@ -13,10 +13,10 @@ public class GiangVienRepository {
     /*
     repository => kết nối với cơ sở dữ liệu
     CRUD
-    - Create <=> Insert
-    - Read <=> Select
-    - Update <=> Update
-    - Delete <=> Delete
+    - Create <=> Insert  => 1 dòng kết quả
+    - Read <=> Select => ResultSet
+    - Update <=> Update => 1 dòng kết quả
+    - Delete <=> Delete => 1 dòng kết quả
      */
     public ArrayList<GiangVien> getAll(){
         //B1: tạo danh sách
@@ -83,7 +83,27 @@ public class GiangVienRepository {
 
         return null;
     }
+    public Boolean add(GiangVien gv){
+        int check = 0;
+        String sql = "INSERT INTO giang_vien VALUES (?,?,?,?,?,?)";
+        try(Connection con = DBConnect.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
+
+
+            ps.setString(1,gv.getMaGV());
+            ps.setString(2,gv.getTen());
+            ps.setString(3,gv.getLoai());
+            ps.setInt(4,gv.getTuoi());
+            ps.setInt(5,gv.getBac());
+            ps.setString(6,gv.getGioiTinh()?"0":"1");
+
+            check= ps.executeUpdate(); //1 rows thành công hoặc 0 rows
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return check > 0;  //0 >0 => flase 1>0 => true
+    }
     public static void main(String[] args) {
         GiangVienRepository rep= new GiangVienRepository();
         List<GiangVien> list= rep.getAll();
@@ -92,6 +112,13 @@ public class GiangVienRepository {
         }
         GiangVien gv= rep.getOne("HangNT169");
         System.out.println("GetOne: "+gv.toString());
+        GiangVien gvNew= new GiangVien("HuyenNK666","Huyền", "Loai 1",18,2,false);
+        Boolean add = rep.add(gvNew);
+        System.out.println(add);
+        List<GiangVien> list2= rep.getAll();
+        for (GiangVien giangVien : list2) {
+            System.out.println(giangVien.toString());
+        }
     }
     /*
     BTVN

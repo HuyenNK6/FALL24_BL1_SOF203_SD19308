@@ -14,5 +14,5 @@ public class GiangVien {
     private String loai;
     private int tuoi;
     private int bac;
-    private boolean gioiTinh;
+    private Boolean gioiTinh;
 }
